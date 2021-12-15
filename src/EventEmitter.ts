@@ -1,15 +1,30 @@
 import { Event, EventName } from './Event';
 
+/**
+ * Select the event with specific name.
+ */
 export type SelectEvent<Events, Name extends EventName> =
     Extract<Events, Event<Name, any>>;
 /** dts2md break */
+/**
+ * Type of event listeners.
+ */
 export type EventListener<EventType extends Event = Event> = (event: EventType) => void;
 /** dts2md break */
+/**
+ * Type of listener records.
+ */
 export interface ListenerRecord<EventType extends Event> {
     listener: EventListener<EventType>;
     once: boolean;
 }
 /** dts2md break */
+/**
+ * The class of event targets,
+ * where `EventType` specifies what kind of events
+ * the target can listen on or emit.
+ * (You can use type unions to specify `EventType`.)
+ */
 export class EventEmitter<EventType extends Event = Event> {
     /** dts2md break */
     /**
@@ -40,6 +55,9 @@ export class EventEmitter<EventType extends Event = Event> {
         return handled;
     }
     /** dts2md break */
+    /**
+     * Add a listener that listens on specific event.
+     */
     addListener<K extends EventType['name']>(
         eventName: K,
         listener: EventListener<SelectEvent<EventType, K>>,
@@ -71,6 +89,10 @@ export class EventEmitter<EventType extends Event = Event> {
         return this.addListener(eventName, listener, true);
     }
     /** dts2md break */
+    /**
+     * Remove a listener by passing the same arguments
+     * that you passed to `addListener`.
+     */
     removeListener<K extends EventType['name']>(
         eventName: K,
         listener: EventListener<SelectEvent<EventType, K>>,
