@@ -27,6 +27,11 @@ export interface EventDescription<NameType extends EventName, DataType> {
      * @default false
      */
     cancelable?: boolean;
+    /**
+     * The time stamp when the event is created.
+     * @default Event.getTimeStamp()
+     */
+    timeStamp?: number;
 }
 /** dts2md break */
 /**
@@ -52,15 +57,15 @@ export class Event<NameType extends EventName = EventName, DataType = unknown> {
      * The time stamp generator.
      * @default Date.now
      */
-    static timeGetter = Date.now;
+    static getTimeStamp = Date.now;
     /** dts2md break */
     /**
      * The constructor of event objects.
      */
     constructor(init: EventInit<NameType, DataType>) {
-        const timeStamp = Event.timeGetter();
+        const timeStamp = Event.getTimeStamp();
         const description = (typeof init === 'function') ? init(timeStamp) : init;
-        this.timeStamp = timeStamp;
+        this.timeStamp = description.timeStamp ?? timeStamp;
         this.name = description.name;
         this.data = description.data;
         this.stoppable = description.stoppable === true;
@@ -74,6 +79,7 @@ export class Event<NameType extends EventName = EventName, DataType = unknown> {
     /** dts2md break */
     /**
      * The time stamp when the event is created.
+     * @default Event.getTimeStamp()
      */
     readonly timeStamp: number;
     /** dts2md break */
