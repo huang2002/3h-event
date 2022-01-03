@@ -1,12 +1,26 @@
 // @ts-check
+const { test } = require('3h-test');
 const HEvent = /** @type {import('..')} */(
     /** @type {unknown} */(require('../dist/3h-event.umd.js'))
 );
-const { test } = require('3h-test');
 
 const { Event, EventEmitter } = HEvent;
 
 test(null, {
+
+    timeStamp(context) {
+
+        context.assert(Math.abs(Event.getTimeStamp() - Date.now()) <= 1);
+
+        const timeStamp0 = Date.now();
+        const event0 = new Event({ name: 'test', data: null });
+        context.assert(Math.abs(event0.timeStamp - timeStamp0) <= 1);
+
+        const timeStamp1 = 1011;
+        const event1 = new Event({ name: 'test', data: null, timeStamp: timeStamp1 });
+        context.assert(Math.abs(event1.timeStamp - timeStamp1) <= 1);
+
+    },
 
     basics(context) {
 
@@ -62,18 +76,28 @@ test(null, {
          * @param {number} data
          * @returns {EventA}
          */
-        const createEventA = (data) => (new Event({ name: 'a', data }));
+        const createEventA = (data) => (
+            /** @type {EventA} */(
+                new Event(
+                    () => ({ name: 'a', data })
+                )
+            )
+        );
 
         /**
          * @param {number} x
          * @returns {EventB}
          */
-        const createEventB = (x) => (new Event({ name: 'b', data: { x } }));
+        const createEventB = (x) => (
+            new Event({ name: 'b', data: { x } })
+        );
 
         /**
          * @returns {EventC}
          */
-        const createEventC = () => (new Event({ name: EVENT_C, data: null }));
+        const createEventC = () => (
+            new Event({ name: EVENT_C, data: null })
+        );
 
         const eventA0 = createEventA(0);
         const eventA1 = createEventA(1);
