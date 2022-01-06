@@ -1,6 +1,11 @@
 import { Event } from './Event';
 
-export type EventMap = Record<string, Event>;
+/**
+ * Type of event maps.
+ */
+export interface EventMap {
+    [eventName: string]: Event;
+}
 /** dts2md break */
 /**
  * Type of event listeners.
