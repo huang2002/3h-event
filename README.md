@@ -17,7 +17,11 @@ const EVENT_B = Symbol('name of event b');
 
 type EventA = Event<'name_of_event_a', DataTypeOfEventA>;
 type EventB = Event<EVENT_B, DataTypeOfEventB>;
-type MyEvent = EventA | EventB;
+
+interface MyEvents {
+    name_of_event_a: EventA;
+    [EVENT_B]: EventB;
+}
 
 const eventEmitter = new EventEmitter<MyEvent>();
 

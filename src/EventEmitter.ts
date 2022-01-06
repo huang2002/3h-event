@@ -1,10 +1,6 @@
-import { Event, EventName } from './Event';
+import { Event } from './Event';
 
-/**
- * Select the event with specific name.
- */
-export type SelectEvent<Events, Name extends EventName> =
-    Extract<Events, Event<Name, any>>;
+export type EventMap = Record<string, Event>;
 /** dts2md break */
 /**
  * Type of event listeners.
@@ -25,20 +21,20 @@ export interface ListenerRecord<EventType extends Event> {
  * the target can listen on or emit.
  * (You can use type unions to specify `EventType`.)
  */
-export class EventEmitter<EventType extends Event = Event> {
+export class EventEmitter<Events extends EventMap = EventMap> {
     /** dts2md break */
     /**
      * eventName -> listenerRecords[]
      */
-    readonly listenerMap: Map<EventType['name'], ListenerRecord<EventType>[]> = new Map();
+    readonly listenerMap: Map<keyof Events, ListenerRecord<Events[keyof Events]>[]> = new Map();
     /** dts2md break */
     /**
      * Returns `true` if some listeners are triggered;
      * Returns `false` if there are no listeners.
      */
-    emit(event: EventType) {
+    emit(event: Events[keyof Events]) {
         const { listenerMap } = this;
-        const { name } = event;
+        const name = event.name as keyof Events;
         let handled = false;
         if (listenerMap.has(name)) {
             const records = listenerMap.get(name)!;
@@ -58,17 +54,17 @@ export class EventEmitter<EventType extends Event = Event> {
     /**
      * Add a listener that listens on specific event.
      */
-    addListener<K extends EventType['name']>(
+    addListener<K extends keyof Events>(
         eventName: K,
-        listener: EventListener<SelectEvent<EventType, K>>,
+        listener: EventListener<Events[K]>,
         once = false,
     ) {
         const { listenerMap } = this;
         if (listenerMap.has(eventName)) {
-            const records = listenerMap.get(eventName)! as ListenerRecord<SelectEvent<EventType, K>>[];
+            const records = listenerMap.get(eventName)! as ListenerRecord<Events[K]>[];
             records.push({ listener, once });
         } else {
-            const record = { listener, once } as ListenerRecord<EventType>;
+            const record = { listener, once } as ListenerRecord<Events[keyof Events]>;
             listenerMap.set(eventName, [record]);
         }
         return this;
@@ -82,9 +78,9 @@ export class EventEmitter<EventType extends Event = Event> {
     /**
      * addListener(eventName, listener, true)
      */
-    once<K extends EventType['name']>(
+    once<K extends keyof Events>(
         eventName: K,
-        listener: EventListener<SelectEvent<EventType, K>>,
+        listener: EventListener<Events[K]>,
     ) {
         return this.addListener(eventName, listener, true);
     }
@@ -93,9 +89,9 @@ export class EventEmitter<EventType extends Event = Event> {
      * Remove a listener by passing the same arguments
      * that you passed to `addListener`.
      */
-    removeListener<K extends EventType['name']>(
+    removeListener<K extends keyof Events>(
         eventName: K,
-        listener: EventListener<SelectEvent<EventType, K>>,
+        listener: EventListener<Events[K]>,
         once = false,
     ) {
         const { listenerMap } = this;

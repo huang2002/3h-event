@@ -33,7 +33,11 @@ test(null, {
          */
 
         /**
-         * @type {HEvent.EventEmitter<EventA | EventB | EventC>}
+         * @typedef {{ a: EventA; b: EventB; [EVENT_C]: EventC; }} Events
+         */
+
+        /**
+         * @type {HEvent.EventEmitter<Events>}
          */
         const eventEmitter = new EventEmitter();
         let logs = [];
@@ -133,7 +137,7 @@ test(null, {
          */
 
         /**
-         * @type {HEvent.EventEmitter<EventX | EventY>}
+         * @type {HEvent.EventEmitter<{ x: EventX; y: EventY; }>}
          */
         const eventEmitter = new EventEmitter();
 
@@ -196,7 +200,7 @@ test(null, {
          */
 
         /**
-         * @type {HEvent.EventEmitter<EventX | EventY>}
+         * @type {HEvent.EventEmitter<{ x: EventX; y: EventY; }>}
          */
         const eventEmitter = new EventEmitter();
 
