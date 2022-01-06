@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+- Modify event template declaration
+- Remove type `SelectEvent`
+- Add type `EventMap`
+
 ## 0.2.0
 
 - Rename `Event.timeGetter` `Event.getTimeStamp`
