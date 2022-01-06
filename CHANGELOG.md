@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+- Fix declaration of `EventMap`
+
 ## 0.3.0
 
 - Modify event template declaration
