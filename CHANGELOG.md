@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+- Add `addListeners`
+
 ## 0.3.1
 
 - Fix declaration of `EventMap`
