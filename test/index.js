@@ -261,4 +261,51 @@ test(null, {
 
     },
 
+    addListeners(context) {
+
+        /**
+         * @typedef {HEvent.Event<'a', string>} EventA
+         * @typedef {HEvent.Event<'b', string>} EventB
+         */
+
+        /**
+         * @type {HEvent.EventEmitter<{ a: EventA; b: EventB; }>}
+         */
+        const eventEmitter = new EventEmitter();
+        let log = '';
+
+        /**
+         * @param {EventA | EventB} event
+         */
+        const logger = (event) => {
+            log += event.data;
+        };
+
+        HEvent.addListeners(eventEmitter, {
+            a: logger,
+            b: {
+                listener: logger,
+                once: true,
+            },
+        });
+
+        /**
+         * @type {EventA}
+         */
+        const eventA = new Event({ name: 'a', data: '0' });
+
+        /**
+         * @type {EventB}
+         */
+        const eventB = new Event({ name: 'b', data: '1' });
+
+        eventEmitter.emit(eventA);
+        eventEmitter.emit(eventB);
+        eventEmitter.emit(eventA);
+        eventEmitter.emit(eventB);
+
+        context.assertStrictEqual(log, '010');
+
+    },
+
 });
