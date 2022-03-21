@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+- Fix a bug caused by mutating `listenerMap` in listeners
+
 ## 0.4.0
 
 - Add `addListeners`
