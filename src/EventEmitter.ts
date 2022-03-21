@@ -43,15 +43,23 @@ export class EventEmitter<Events extends EventMap = EventMap> {
         let handled = false;
         if (listenerMap.has(name)) {
             const records = listenerMap.get(name)!;
-            const remainingRecords = records.filter(record => {
+            records.forEach(record => {
                 if (event.stopped) {
                     return true;
                 }
                 handled = true;
                 record.listener(event);
-                return !record.once;
             });
-            listenerMap.set(name, remainingRecords);
+            const _records = listenerMap.get(name);
+            if (_records) {
+                const remainingRecords = _records.filter(
+                    record => (
+                        !record.once
+                        || !records.includes(record)
+                    )
+                );
+                listenerMap.set(name, remainingRecords);
+            }
         }
         return handled;
     }

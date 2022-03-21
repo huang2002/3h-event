@@ -308,4 +308,34 @@ test(null, {
 
     },
 
+    mutate_listenerMap_in_listener(context) {
+
+        let count = 0;
+
+        /**
+         * @typedef {HEvent.Event<'test', string>} TestEvent
+         */
+
+        /**
+         * @type {HEvent.EventEmitter<{ test: TestEvent; }>}
+         */
+        const eventEmitter = new EventEmitter();
+
+        eventEmitter.on('test', () => {
+            eventEmitter.listenerMap.clear();
+            count++;
+        });
+
+        const testEvent = new Event({
+            name: 'test',
+            data: null,
+        });
+
+        eventEmitter.emit(testEvent);
+        eventEmitter.emit(testEvent);
+
+        context.assertStrictEqual(count, 1);
+
+    },
+
 });
