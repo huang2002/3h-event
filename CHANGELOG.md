@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2
+
+- Fix docs.
+
 ## 0.4.1
 
 - Fix a bug caused by mutating `listenerMap` in listeners
