@@ -22,9 +22,8 @@ export interface ListenerRecord<EventType extends Event> {
 /** dts2md break */
 /**
  * The class of event targets,
- * where `EventType` specifies what kind of events
- * the target can listen on or emit.
- * (You can use type unions to specify `EventType`.)
+ * where `Events` specifies what kind of events
+ * can be listened or emitted.
  */
 export class EventEmitter<Events extends EventMap = EventMap> {
     /** dts2md break */
