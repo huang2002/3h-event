@@ -1,6 +1,6 @@
 {
   "name": "3h-event",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A well-typed event emitter.",
   "module": "./dist/3h-event.min.js",
   "main": "./dist/3h-event.umd.min.js",
